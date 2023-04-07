@@ -4,8 +4,6 @@ void setup() {
   Serial.begin(9600);
 
   setupServos();
-
-  delay(10);
 }
 
 void loop() {
@@ -21,12 +19,15 @@ void walking() {
   for (int i = 0; i < steps; i++) {
 
     // Move front right leg forward
-    setAnkleAngle(105);
+    setLowerAngle(105);
+    setMiddleAngle(MIDDLE_FL_CHANNEL, 120);
+    
 
     delay(500);
 
     // Move front right leg backward
-    setAnkleAngle(120);
+    setLowerAngle(115);
+    setMiddleAngle(MIDDLE_FL_CHANNEL, 110);
 
     delay(1000);
 
