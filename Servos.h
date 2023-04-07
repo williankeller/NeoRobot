@@ -9,32 +9,33 @@
 #define SERVO_MAX_PULSE 2400 
 #define SERVO_FREQUENCY 50
 
-// Hip servo variables
-#define HIP_FR_CHANNEL 1
-#define HIP_FL_CHANNEL 2
-#define HIP_RR_CHANNEL 3
-#define HIP_RL_CHANNEL 4
-#define HIP_MIN_ANGLE  90
-#define HIP_MID_ANGLE  90
-#define HIP_MAX_ANGLE  170
+// Upper servo variables
 
-// Thigh servo variables
-#define THIGH_FR_CHANNEL 5
-#define THIGH_FL_CHANNEL 6
-#define THIGH_RR_CHANNEL 7
-#define THIGH_RL_CHANNEL 8
-#define THIGH_MIN_ANGLE  90
-#define THIGH_MID_ANGLE  90
-#define THIGH_MAX_ANGLE  170
+#define UPPER_FL_CHANNEL 1
+#define UPPER_FR_CHANNEL 0 // TBD
+#define UPPER_RL_CHANNEL 0 // TBD
+#define UPPER_RR_CHANNEL 0 // TBD
+#define UPPER_MIN_ANGLE  90 // TBD
+#define UPPER_MID_ANGLE  90 // TBD
+#define UPPER_MAX_ANGLE  170 // TBD
 
-// Ankle servo variables
-#define ANKLE_FR_CHANNEL 9
-#define ANKLE_FL_CHANNEL 10
-#define ANKLE_RR_CHANNEL 11
-#define ANKLE_RL_CHANNEL 12
-#define ANKLE_MIN_ANGLE  80
-#define ANKLE_MID_ANGLE  120
-#define ANKLE_MAX_ANGLE  170
+// Middle servo variables
+#define MIDDLE_FL_CHANNEL 2
+#define MIDDLE_FR_CHANNEL 0 // TBD
+#define MIDDLE_RL_CHANNEL 0 // TBD
+#define MIDDLE_RR_CHANNEL 0 // TBD
+#define MIDDLE_MIN_ANGLE  90
+#define MIDDLE_MID_ANGLE  110
+#define MIDDLE_MAX_ANGLE  180
+
+// Lower servo variables
+#define LOWER_FL_CHANNEL 3
+#define LOWER_FR_CHANNEL 0 // TBD
+#define LOWER_RL_CHANNEL 0 // TBD
+#define LOWER_RR_CHANNEL 0 // TBD
+#define LOWER_MIN_ANGLE  80
+#define LOWER_MID_ANGLE  120
+#define LOWER_MAX_ANGLE  170
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
@@ -74,29 +75,30 @@ void setServoAngle(uint8_t servoPort, int angle) {
   pwm.setPWM(servoPort, 0, pwmValue);
 }
 
-void setAnkleAngle(int angle) {
-  // Check that the desired angle is within the valid range for the servo
-  if (angle < ANKLE_MIN_ANGLE || angle > ANKLE_MAX_ANGLE) {
-    Serial.println("Error: Invalid angle for the ankle");
-    return;
-  }
-  setServoAngle(ANKLE_FL_CHANNEL, angle);
-}
 
-void setHipAngle(uint8_t servoPort, int angle) {
+void setUpperAngle(uint8_t servoPort, int angle) {
   // Check that the desired angle is within the valid range for the servo
-  if (angle < HIP_MIN_ANGLE || angle > HIP_MAX_ANGLE) {
+  if (angle < UPPER_MIN_ANGLE || angle > UPPER_MAX_ANGLE) {
     Serial.println("Error: Invalid angle for the hip");
     return;
   }
   setServoAngle(servoPort, angle);
 }
 
-void setThighAngle(uint8_t servoPort, int angle) {
+void setMiddleAngle(uint8_t servoPort, int angle) {
   // Check that the desired angle is within the valid range for the servo
-  if (angle < THIGH_MIN_ANGLE || angle > THIGH_MAX_ANGLE) {
-    Serial.println("Error: Invalid angle for the thigh");
+  if (angle < MIDDLE_MIN_ANGLE || angle > MIDDLE_MAX_ANGLE) {
+    Serial.println("Error: Invalid angle for the Middle servo");
     return;
   }
   setServoAngle(servoPort, angle);
+}
+
+void setLowerAngle(int angle) {
+  // Check that the desired angle is within the valid range for the servo
+  if (angle < LOWER_MIN_ANGLE || angle > LOWER_MAX_ANGLE) {
+    Serial.println("Error: Invalid angle for the ankle");
+    return;
+  }
+  setServoAngle(LOWER_FL_CHANNEL, angle);
 }
