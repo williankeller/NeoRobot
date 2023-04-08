@@ -15,9 +15,9 @@
 #define UPPER_FR_CHANNEL 0 // TBD
 #define UPPER_RL_CHANNEL 0 // TBD
 #define UPPER_RR_CHANNEL 0 // TBD
-#define UPPER_MIN_ANGLE  90 // TBD
-#define UPPER_MID_ANGLE  90 // TBD
-#define UPPER_MAX_ANGLE  170 // TBD
+#define UPPER_MIN_ANGLE  0 // TBD
+#define UPPER_MID_ANGLE  115 // TBD
+#define UPPER_MAX_ANGLE  270 // TBD
 
 // Middle servo variables
 #define MIDDLE_FL_CHANNEL 2
