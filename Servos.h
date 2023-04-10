@@ -8,11 +8,6 @@
 #define SERVO_MAX_PULSE 2400
 #define SERVO_FREQUENCY 50
 
-// Robot dimensions
-const float UPPER_SEGMENT_LENGTH = 52.5;
-const float MIDDLE_SEGMENT_LENGTH = 63.5;
-const float LOWER_SEGMENT_LENGTH = 54.0;
-
 struct LegSectionChannels {
   uint8_t channel;
   int minAngle;
