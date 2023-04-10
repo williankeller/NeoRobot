@@ -1,44 +1,44 @@
-#include <stdio.h>
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
-// General servo variables
+// Servo general settings
 #define SERVO_MIN_ANGLE 0
-#define SERVO_MAX_ANGLE 280
-#define SERVO_MIN_PULSE 600 
-#define SERVO_MAX_PULSE 2400 
+#define SERVO_MAX_ANGLE 270
+#define SERVO_MIN_PULSE 600
+#define SERVO_MAX_PULSE 2400
 #define SERVO_FREQUENCY 50
 
-// Upper servo variables
+// Robot dimensions
+const float UPPER_SEGMENT_LENGTH = 52.5;
+const float MIDDLE_SEGMENT_LENGTH = 63.5;
+const float LOWER_SEGMENT_LENGTH = 54.0;
 
-#define UPPER_FL_CHANNEL 1
-#define UPPER_FR_CHANNEL 0 // TBD
-#define UPPER_RL_CHANNEL 0 // TBD
-#define UPPER_RR_CHANNEL 0 // TBD
-#define UPPER_MIN_ANGLE  0 // TBD
-#define UPPER_MID_ANGLE  115 // TBD
-#define UPPER_MAX_ANGLE  270 // TBD
+struct LegSectionChannels {
+  uint8_t channel;
+  int minAngle;
+  int midAngle;
+  int maxAngle;
+};
 
-// Middle servo variables
-#define MIDDLE_FL_CHANNEL 2
-#define MIDDLE_FR_CHANNEL 0 // TBD
-#define MIDDLE_RL_CHANNEL 0 // TBD
-#define MIDDLE_RR_CHANNEL 0 // TBD
-#define MIDDLE_MIN_ANGLE  90
-#define MIDDLE_MID_ANGLE  110
-#define MIDDLE_MAX_ANGLE  180
+struct LegChannels {
+  LegSectionChannels upper;
+  LegSectionChannels middle;
+  LegSectionChannels lower;
+};
 
-// Lower servo variables
-#define LOWER_FL_CHANNEL 3
-#define LOWER_FR_CHANNEL 0 // TBD
-#define LOWER_RL_CHANNEL 0 // TBD
-#define LOWER_RR_CHANNEL 0 // TBD
-#define LOWER_MIN_ANGLE  80
-#define LOWER_MID_ANGLE  120
-#define LOWER_MAX_ANGLE  170
+LegChannels frontLeftLeg = {
+  {1, 70, 96, 120},  // Upper (Shoulder) servo on channel 1
+  {2, 90, 110, 180}, // Middle (Thigh) servo on channel 2
+  {3, 80, 120, 170}  // Lower (Knee) servo on channel 3
+};
+
+LegChannels frontRightLeg = {
+  {5, 70, 100, 120}, // Upper (Shoulder) servo on channel 5
+  {6, 90, 110, 180}, // Middle (Thigh) servo on channel 6
+  {7, 80, 120, 170}  // Lower (Knee) servo on channel 7
+};
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
-
 
 void setupServos() {
   Serial.begin(9700);
@@ -75,30 +75,35 @@ void setServoAngle(uint8_t servoPort, int angle) {
   pwm.setPWM(servoPort, 0, pwmValue);
 }
 
-
-void setUpperAngle(uint8_t servoPort, int angle) {
-  // Check that the desired angle is within the valid range for the servo
-  if (angle < UPPER_MIN_ANGLE || angle > UPPER_MAX_ANGLE) {
-    Serial.println("Error: Invalid angle for the hip");
+void setLegSectionAngle(LegSectionChannels legSection, int angle) {
+  // Check that the desired angle is within the valid range for the leg section
+  if (angle < legSection.minAngle || angle > legSection.maxAngle) {
+    Serial.print("Error: Invalid angle for channel ");
+    Serial.print(legSection.channel);
+    Serial.print(": Angle ");
+    Serial.print(angle);
+    Serial.print(" out of range. Valid range is ");
+    Serial.print(legSection.minAngle);
+    Serial.print(" to ");
+    Serial.print(legSection.maxAngle);
+    Serial.print(" degrees.");
+    
+    delay(1000);
+  
     return;
   }
-  setServoAngle(servoPort, angle);
+  setServoAngle(legSection.channel, angle);
 }
 
-void setMiddleAngle(uint8_t servoPort, int angle) {
-  // Check that the desired angle is within the valid range for the servo
-  if (angle < MIDDLE_MIN_ANGLE || angle > MIDDLE_MAX_ANGLE) {
-    Serial.println("Error: Invalid angle for the Middle servo");
-    return;
-  }
-  setServoAngle(servoPort, angle);
-}
+void setServoAngleWithSpeed(uint8_t servoPort, int targetAngle, int speed) {
+  int currentAngle = map(pwm.getPWM(servoPort), SERVO_MIN_PULSE, SERVO_MAX_PULSE, SERVO_MIN_ANGLE, SERVO_MAX_ANGLE);
+  int angleIncrement = (targetAngle > currentAngle) ? 1 : -1;
+  int incrementDelay = 1000 / abs(targetAngle - currentAngle) * (1000 / speed);
 
-void setLowerAngle(int angle) {
-  // Check that the desired angle is within the valid range for the servo
-  if (angle < LOWER_MIN_ANGLE || angle > LOWER_MAX_ANGLE) {
-    Serial.println("Error: Invalid angle for the ankle");
-    return;
+  for (int angle = currentAngle; angle != targetAngle; angle += angleIncrement) {
+    setServoAngle(servoPort, angle);
+    delay(incrementDelay);
   }
-  setServoAngle(LOWER_FL_CHANNEL, angle);
+
+  setServoAngle(servoPort, targetAngle);
 }

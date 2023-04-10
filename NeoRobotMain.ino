@@ -8,7 +8,8 @@ void setup() {
 
 void loop() {
 
-  setUpperAngle(UPPER_FL_CHANNEL, 115);
+  //setLegSectionAngle(frontLeftLeg.lower, frontLeftLeg.lower.midAngle);
+  setLegSectionAngle(frontLeftLeg.upper, frontLeftLeg.upper.midAngle);
   //walking();
 }
 
@@ -20,7 +21,7 @@ void walking() {
   for (int i = 0; i < steps; i++) {
 
     // Move front right leg forward
-    setUpperAngle(UPPER_FL_CHANNEL, 115);
+    setLegSectionAngle(frontLeftLeg.upper, 115);
     //setLowerAngle(105);
     //setMiddleAngle(MIDDLE_FL_CHANNEL, 120);
     
@@ -28,9 +29,7 @@ void walking() {
     delay(1000);
 
     // Move front right leg backward
-    //setUpperAngle(UPPER_FL_CHANNEL, 270);    
-    //setLowerAngle(115);
-    //setMiddleAngle(MIDDLE_FL_CHANNEL, 110);
+    setLegSectionAngle(frontLeftLeg.upper, 270);    
 
     delay(1000);
 
