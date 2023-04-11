@@ -29,8 +29,8 @@ LegChannels frontLeftLeg = {
 
 LegChannels frontRightLeg = {
   {5, 70, 100, 120}, // Upper (Shoulder) servo on channel 5
-  {6, 90, 110, 180}, // Middle (Thigh) servo on channel 6
-  {7, 80, 120, 170}  // Lower (Knee) servo on channel 7
+  {6, 50, 110, 135}, // Middle (Thigh) servo on channel 6
+  {7, 80, 120, 172}  // Lower (Knee) servo on channel 7
 };
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
@@ -82,6 +82,7 @@ void setLegSectionAngle(LegSectionChannels legSection, int angle) {
     Serial.print(" to ");
     Serial.print(legSection.maxAngle);
     Serial.print(" degrees.");
+    Serial.println();
     
     delay(1000);
   

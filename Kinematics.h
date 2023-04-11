@@ -4,9 +4,9 @@
 #define PI 3.1415926535897932384626433832795
 
 // Gait settings
-#define GAIT_STEP_DURATION 500 // milliseconds
-#define GAIT_STEP_HEIGHT 20 // millimeters
-#define GAIT_STEP_DISTANCE 30 // millimeters
+#define GAIT_STEP_DURATION 500  // milliseconds
+#define GAIT_STEP_HEIGHT 20     // millimeters
+#define GAIT_STEP_DISTANCE 30   // millimeters
 
 // Robot dimensions
 const float UPPER_SEGMENT_LENGTH = 52.5;
@@ -52,6 +52,23 @@ void setLegPosition(LegChannels leg, float x, float y, float z) {
   int shoulderAngle = int(alpha * 180 / PI);
   int thighAngle = int(beta * 180 / PI);
   int kneeAngle = int(gamma * 180 / PI);
+
+  Serial.println("DEBUG: Inverse kinematics");
+  Serial.println("- Equations: ");
+  Serial.print("  alpha: ");
+  Serial.print(alpha);
+  Serial.print(" | beta: ");
+  Serial.print(beta);
+  Serial.print(" | gama: ");
+  Serial.println(gamma);
+  Serial.println("- Convert radians to degrees: ");
+  Serial.print("  shoulder: ");
+  Serial.print(shoulderAngle);
+  Serial.print(" | thigh: ");
+  Serial.print(thighAngle);
+  Serial.print(" | knee: ");
+  Serial.println(kneeAngle);
+  Serial.println("-------------------------------------------");
 
   setLegAngles(leg, shoulderAngle, thighAngle, kneeAngle);
 }
@@ -110,4 +127,3 @@ void changeState(RobotState newState) {
       break;
   }
 }
-
