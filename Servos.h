@@ -21,23 +21,37 @@ struct LegChannels {
   LegSectionChannels lower;
 };
 
+// Front Left leg (Channel, min range, mid range (stand pos), max range)
 LegChannels frontLeftLeg = {
-  {1, 70, 96, 120},  // Upper (Shoulder) servo on channel 1
-  {2, 90, 110, 180}, // Middle (Thigh) servo on channel 2
-  {3, 80, 120, 170}  // Lower (Knee) servo on channel 3
+  {1, 70, 95, 120},  // Upper (Shoulder)
+  {2, 90, 115, 180}, // Middle (Thigh)
+  {3, 80, 115, 170}  // Lower (Knee)
 };
 
+// Front Right leg (Channel, min range, mid range (stand pos), max range)
 LegChannels frontRightLeg = {
-  {5, 70, 100, 120}, // Upper (Shoulder) servo on channel 5
-  {6, 50, 110, 135}, // Middle (Thigh) servo on channel 6
-  {7, 80, 120, 172}  // Lower (Knee) servo on channel 7
+  {5, 120, 157, 180}, // Upper (Shoulder)
+  {6, 50, 110, 135},  // Middle (Thigh)
+  {7, 90, 135, 180}   // Lower (Knee)
+};
+
+// Rear Left leg (Channel, min range, mid range (stand pos), max range)
+LegChannels rearLeftLeg = {
+  {9, 100, 145, 180}, // Upper (Shoulder)
+  {10, 80, 110, 170}, // Middle (Thigh)
+  {11, 90, 125, 180}  // Lower (Knee)
+};
+
+// Rear Right leg (Channel, min range, mid range (stand pos), max range)
+LegChannels rearRightLeg = {
+  {13, 0, 270, 270}, // Upper (Shoulder)
+  {14, 0, 270, 270},  // Middle (Thigh)
+  {15, 0, 270, 270}   // Lower (Knee)
 };
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 void setupServos() {
-  Serial.begin(9700);
-
   // Initialize the PWM driver
   pwm.begin();
   pwm.setOscillatorFrequency(27000000);
